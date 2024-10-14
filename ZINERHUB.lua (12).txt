@@ -5076,22 +5076,6 @@ Options.ToggleF:SetValue(false)
 
 local Pos = Tabs.Setting:AddSection("Distance Farm")
 
-local SliderPosX = Tabs.Setting:AddSlider("SliderPosX", {
-    Title = "Pos X",
-    Description = "",
-    Default = 0,
-    Min = -60,
-    Max = 60,
-    Rounding = 1,
-    Callback = function(Value)
-      posX = Value
-    end
-})
-SliderPosX:OnChanged(function(Value)
-  posX = Value
-end)
-SliderPosX:SetValue(0)
-
 local SliderPosY = Tabs.Setting:AddSlider("SliderPosY", {
     Title = "Pos Y",
     Description = "",
@@ -5107,22 +5091,6 @@ SliderPosY:OnChanged(function(Value)
   posY = Value
 end)
 SliderPosY:SetValue(30)
-
-local SliderPosZ = Tabs.Setting:AddSlider("SliderPosZ", {
-    Title = "Pos Z",
-    Description = "",
-    Default = 0,
-    Min = -60,
-    Max = 60,
-    Rounding = 1,
-    Callback = function(Value)
-      posZ = Value
-    end
-})
-SliderPosZ:OnChanged(function(Value)
-     posZ = Value
-end)
-SliderPosZ:SetValue(0)
 
 
 --------------------------------------------------------------------------------------------------------------------------------------------
