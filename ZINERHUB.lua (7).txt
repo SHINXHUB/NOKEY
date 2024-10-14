@@ -2576,30 +2576,6 @@ local listfastattack = {'Normal','Slow','Super','Low'}
 	 end
  end)
 
-local Farming = Tabs.Main:AddSection("Farming")
-local listfastattack = {'Fast','Smooth','Super Fast''}
-
-    local DropdownDelayAttack = Tabs.Main:AddDropdown("DropdownDelayAttack", {
-        Title = "Select Fast Attack",
-        Description = "",
-        Values = listfastattack,
-        Multi = false,
-        Default = 1,
-    })
-    DropdownDelayAttack:SetValue("Super Fast")
-    DropdownDelayAttack:OnChanged(function(Value)
-	_G.FastAttackZINER_Mode = Value
-	if _G.FastAttackZINER_Mode == "Fast" then
-		_G.Fast_Delay = 0.1
-	elseif _G.FastAttackZINER_Mode == "Smooth" then
-		_G.Fast_Delay = 0.3
-	elseif _G.FastAttackZINER_Mode == "Super Fast" then
-		_G.Fast_Delay = 0
-	end
-end)
-local Camera = require(game.ReplicatedStorage.Util.CameraShaker)
-Camera:Stop()
-
     local DropdownSelectWeapon = Tabs.Main:AddDropdown("DropdownSelectWeapon", {
         Title = "Weapon",
         Description = "",
@@ -4872,6 +4848,23 @@ spawn(function()
     end)
 end) 
  
+ local ToggleFast = Tabs.Setting:AddToggle("ToggleFast", {Title = "Enabled Fast Attack",Description = "", Default = true })
+ToggleFast:OnChanged(function(Value)
+    _G.FastAttackWinterhub_Mode = Value
+end)
+Options.ToggleFast:SetValue(true)
+spawn(function()
+	while wait(.5) do
+		pcall(function()
+			if _G.FastAttackWinterhub_Mode then
+				repeat wait(_G.Fast_Delay)
+					AttackNoCD()
+				until not _G.FastAttackWinterhub_Mode
+			end
+		end)
+	end
+end)
+
     local ToggleBringMob = Tabs.Setting:AddToggle("ToggleBringMob", {Title = "Enabled Bring Mob",Description = "fix gom quái", Default = true })
    ToggleBringMob:OnChanged(function(Value)
         _G.BringMob = Value
