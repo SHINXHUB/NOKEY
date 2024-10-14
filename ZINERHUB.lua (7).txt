@@ -2576,6 +2576,30 @@ local listfastattack = {'Normal','Slow','Super','Low'}
 	 end
  end)
 
+local Farming = Tabs.Main:AddSection("Farming")
+local listfastattack = {'Fast','Smooth','Super Fast''}
+
+    local DropdownDelayAttack = Tabs.Main:AddDropdown("DropdownDelayAttack", {
+        Title = "Select Fast Attack",
+        Description = "",
+        Values = listfastattack,
+        Multi = false,
+        Default = 1,
+    })
+    DropdownDelayAttack:SetValue("Super Fast")
+    DropdownDelayAttack:OnChanged(function(Value)
+	_G.FastAttackZINER_Mode = Value
+	if _G.FastAttackZINER_Mode == "Fast" then
+		_G.Fast_Delay = 0.1
+	elseif _G.FastAttackZINER_Mode == "Smooth" then
+		_G.Fast_Delay = 0.3
+	elseif _G.FastAttackZINER_Mode == "Super Fast" then
+		_G.Fast_Delay = 0
+	end
+end)
+local Camera = require(game.ReplicatedStorage.Util.CameraShaker)
+Camera:Stop()
+
     local DropdownSelectWeapon = Tabs.Main:AddDropdown("DropdownSelectWeapon", {
         Title = "Weapon",
         Description = "",
