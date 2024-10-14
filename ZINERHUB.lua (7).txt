@@ -2523,23 +2523,62 @@ function to(p)
 
 --------------------------------------------------------------------------------------------------------------------------------------------
 ---Close UI
-local ScreenGui = Instance.new("ScreenGui")
-local ImageButton = Instance.new("ImageButton")
 local UICorner = Instance.new("UICorner")
+local ToggleScreen = Instance.new("ScreenGui")
+ToggleScreen.Name = "ImageButton"
+ToggleScreen.Parent = game.CoreGui
+ToggleScreen.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
-ScreenGui.Parent = game.CoreGui
-ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+local ToggleToggle = Instance.new("TextButton")
+ToggleToggle.Name = "ToggleToggle"
+ToggleToggle.Parent = ToggleScreen
+ToggleToggle.BackgroundColor3 = Color3.fromRGB(31, 31, 31)
+ToggleToggle.BackgroundTransparency = 1.000
+ToggleToggle.BorderSizePixel = 0
+ToggleToggle.Position = UDim2.new(0.5, -25, 0, 0) 
+ToggleToggle.Size = UDim2.new(0, 50, 0, 50)
+ToggleToggle.Font = Enum.Font.SourceSans
+ToggleToggle.Text = ""
+ToggleToggle.TextColor3 = Color3.fromRGB(0, 0, 0)
+ToggleToggle.TextSize = 14.000
+ToggleToggle.Draggable = true
 
-ImageButton.Parent = ScreenGui
-ImageButton.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-ImageButton.BorderSizePixel = 0
-ImageButton.Position = UDim2.new(0.120833337, 0, 0.0952890813, 0)
-ImageButton.Size = UDim2.new(0, 50, 0, 50)
-ImageButton.Draggable = true
-ImageButton.Image = "http://www.roblox.com/asset/?id=17382863073"
-ImageButton.MouseButton1Down:connect(function()
-    game:GetService("VirtualInputManager"):SendKeyEvent(true,Enum.KeyCode.End,false,game)
+local ToggleToggleFrame = Instance.new("Frame")
+ToggleToggleFrame.Name = "ToggleToggleFrame"
+ToggleToggleFrame.Parent = ToggleToggle
+ToggleToggleFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)  -- Set to white for better gradient effect
+ToggleToggleFrame.BackgroundTransparency = 1.000
+ToggleToggleFrame.BorderSizePixel = 0
+ToggleToggleFrame.Position = UDim2.new(0, -2, 0, -2)  -- Expand the frame to cover the border
+ToggleToggleFrame.Size = UDim2.new(1, 4, 1, 4)  -- Expand the frame to cover the border
+
+UICorner.CornerRadius = UDim.new(0, 90)
+UICorner.Parent = ToggleToggleFrame
+
+local ToggleImageUI = Instance.new("Frame")
+ToggleImageUI.Name = "Fluent"
+ToggleImageUI.Parent = ToggleToggle
+ToggleImageUI.BackgroundColor3 = Color3.fromRGB(192, 192, 192)
+ToggleImageUI.BackgroundTransparency = 1.000
+ToggleImageUI.BorderSizePixel = 0
+ToggleImageUI.Position = UDim2.new(0.0, 0, 0.0, 0)
+ToggleImageUI.Size = UDim2.new(0, 50, 0, 50)
+
+
+local ToggleImageLabel = Instance.new("ImageLabel")
+ToggleImageLabel.Name = "ToggleImageLabel"
+ToggleImageLabel.Parent = ToggleImageUI
+ToggleImageLabel.BackgroundTransparency = 1.000
+ToggleImageLabel.Size = UDim2.new(1, 0, 1, 0)
+ToggleImageLabel.Image = "rbxassetid://94356636757562" --[[can change]]
+ToggleImageLabel.ScaleType = Enum.ScaleType.Slice
+ToggleImageLabel.SliceCenter = Rect.new(50, 50, 50, 50)
+
+ToggleToggle.MouseButton1Click:Connect(function()
+game:GetService("VirtualInputManager"):SendKeyEvent(true,"LeftControl",false,game)
+game:GetService("VirtualInputManager"):SendKeyEvent(false,"LeftControl",false,game)
 end)
+
 --------------------------------------------------------------------------------------------------------------------------------------------
 --Remove Effect
 if game:GetService("ReplicatedStorage").Effect.Container:FindFirstChild("Death") then
@@ -2553,7 +2592,7 @@ end
 --------------------------------------------------------------------------------------------------------------------------------------------
 --Create Tabs
 local Farming = Tabs.Main:AddSection("Farming")
-local listfastattack = {'Normal','Slow','Super','Low'}
+local listfastattack = {'Normal','Slow','SHIN X HUB','Very Fast'}
 
     local DropdownDelayAttack = Tabs.Main:AddDropdown("DropdownDelayAttack", {
         Title = "Select Fast Attack",
@@ -2566,12 +2605,12 @@ local listfastattack = {'Normal','Slow','Super','Low'}
     DropdownDelayAttack:OnChanged(function(Value)
     _G.FastAttackZINER_Mode = Value
 	if _G.FastAttackWinterhub_Mode == "Slow" then
-		_G.Fast_Delay = 0.12
+		_G.Fast_Delay = 0.20
 	elseif _G.FastAttackWinterhub_Mode == "Normal" then
-		_G.Fast_Delay = 0.9
-	elseif _G.FastAttackWinterhub_Mode == "Super" then
-		_G.Fast_Delay = 0.5
-	elseif _G.FastAttackWinterhub_Mode == "Low" then
+		_G.Fast_Delay = 0.15
+	elseif _G.FastAttackWinterhub_Mode == "SHIN X HUB" then
+		_G.Fast_Delay = 0.10
+	elseif _G.FastAttackWinterhub_Mode == "Very Fast" then
 		_G.Fast_Delay = 0
 	 end
  end)
@@ -4864,6 +4903,214 @@ spawn(function()
 		end)
 	end
 end)
+
+local ToggleFast = Tabs.Setting:AddToggle("ToggleFast", {Title = "Enabled Fast Attack",Description = "", Default = true })
+ToggleFast:OnChanged(function(Value)
+    _G.FastAttack = Value
+local CameraShaker = require(game.ReplicatedStorage.Util.CameraShaker)
+CombatFrameworkR = require(game:GetService("Players").LocalPlayer.PlayerScripts.CombatFramework)
+y = debug.getupvalues(CombatFrameworkR)[2]
+spawn(function()
+    game:GetService("RunService").RenderStepped:Connect(function()
+        if _G.FastAttack then
+            if typeof(y) == "table" then
+                pcall(function()
+                    CameraShaker:Stop()
+                    y.activeController.timeToNextAttack = (math.huge^math.huge^math.huge)
+                    y.activeController.timeToNextAttack = 0
+                    y.activeController.hitboxMagnitude = 60
+                    y.activeController.active = false
+                    y.activeController.timeToNextBlock = 0
+                    y.activeController.focusStart = 1655503339.0980349
+                    y.activeController.increment = 1
+                    y.activeController.blocking = false
+                    y.activeController.attacking = false
+                    y.activeController.humanoid.AutoRotate = t
+                end)
+            end
+        end
+    end)
+end)
+spawn(function()
+    game:GetService("RunService").RenderStepped:Connect(function()
+        if _G.FastAttack == t then
+            game.Players.LocalPlayer.Character.Stun.Value = 0
+            game.Players.LocalPlayer.Character.Busy.Value = false        
+        end
+    end)
+end)
+FastAttackSpeed = t
+_G.Fast_Delay = 0.01
+local CurveFrame = debug.getupvalues(require(game:GetService("Players").LocalPlayer.PlayerScripts:WaitForChild("CombatFramework")))[2]
+local VirtualUser = game:GetService("VirtualUser")
+local RigControllerR = debug.getupvalues(require(game:GetService("Players").LocalPlayer.PlayerScripts.CombatFramework.RigController))[2]
+local Client = game:GetService("Players").LocalPlayer
+local DMG = require(Client.PlayerScripts.CombatFramework.Particle.Damage)
+local CameraShaker = require(game.ReplicatedStorage.Util.CameraShaker)
+CameraShaker:Stop()
+function CurveFuckWeapon()
+    local p13 = CurveFrame.activeController
+    local wea = p13.blades[1]
+    if not wea then
+        return
+    end
+    while wea.Parent ~= game.Players.LocalPlayer.Character do
+        wea = wea.Parent
+    end
+    return wea
+end
+
+function getHits(Size)
+    local Hits = {}
+    local Enemies = workspace.Enemies:GetChildren()
+    local Characters = workspace.Characters:GetChildren()
+    for i = 1, #Enemies do
+        local v = Enemies[i]
+        local Human = v:FindFirstChildOfClass("Humanoid")
+        if
+            Human and Human.RootPart and Human.Health > 0 and
+                game.Players.LocalPlayer:DistanceFromCharacter(Human.RootPart.Position) < Size + 5
+         then
+            table.insert(Hits, Human.RootPart)
+        end
+    end
+    for i = 1, #Characters do
+        local v = Characters[i]
+        if v ~= game.Players.LocalPlayer.Character then
+            local Human = v:FindFirstChildOfClass("Humanoid")
+            if
+                Human and Human.RootPart and Human.Health > 0 and
+                    game.Players.LocalPlayer:DistanceFromCharacter(Human.RootPart.Position) < Size + 5
+             then
+                table.insert(Hits, Human.RootPart)
+            end
+        end
+    end
+    return Hits
+end
+
+function Boost()
+    task.spawn(function()
+        game:GetService("ReplicatedStorage").RigControllerEvent:FireServer("weaponChange",tostring(CurveFuckWeapon()))
+    end)
+end
+
+function Unboost()
+    tsak.spawn(function()
+        game:GetService("ReplicatedStorage").RigControllerEvent:FireServer("unequipWeapon",tostring(CurveFuckWeapon()))
+    end)
+end
+
+local cdnormal = 0
+local Animation = Instance.new("Animation")
+local CooldownFastAttack = 0
+
+FastAttack = function()
+    local ac = CurveFrame.activeController
+    if ac and ac.equipped then
+        task.spawn(function()
+            if tick() - cdnormal > 0.5 then
+                ac:attack()
+                cdnormal = tick()
+            else
+                Animation.AnimationId = ac.anims.basic[2]
+                ac.humanoid:LoadAnimation(Animation):Play(1, 1)
+                game:GetService("ReplicatedStorage").RigControllerEvent:FireServer("hit", getHits(120), 2, "")
+            end
+        end)
+    end
+end
+
+bs = tick()
+task.spawn(function()
+    while task.wait(_G.Fast_Delay) do
+        if FastAttackSpeed then
+            _G.Fast = t
+            if bs - tick() > 0.75 then
+                task.wait()
+                bs = tick()
+            end
+            pcall(function()
+                for i, v in pairs(game.Workspace.Enemies:GetChildren()) do
+                    if v.Humanoid.Health > 0 then
+                        if (v.HumanoidRootPart.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude <= 100 then
+                            FastAttack()
+                            task.wait()
+                            Boost()
+                        end
+                    end
+                end
+            end)
+        end
+    end
+end)
+
+k = tick()
+task.spawn(function()
+    if _G.Fast then
+    while task.wait(.2) do
+            if k - tick() > 0.75 then
+                task.wait()
+                k = tick()
+            end
+            end
+            pcall(function()
+                for i, v in pairs(game.Workspace.Enemies:GetChildren()) do
+                    if v.Humanoid.Health > 0 then
+                        if (v.HumanoidRootPart.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude <= 100 then
+                            task.wait(.000010)
+                            Unboost()
+                        end
+                    end
+                end
+            end)
+    end
+end)
+
+task.spawn(function()
+    while task.wait() do
+        if _G.Fast then
+       pcall(function()
+        CurveFrame.activeController.timeToNextAttack = 0
+        CurveFrame.activeController.focusStart = 0
+        CurveFrame.activeController.hitboxMagnitude = 200
+        CurveFrame.activeController.humanoid.AutoRotate = t
+        CurveFrame.activeController.increment = 1 + 1 / 1
+       end)
+    end
+    end
+end)
+
+abc = t
+task.spawn(function()
+    local a = game.Players.LocalPlayer
+    local b = require(a.PlayerScripts.CombatFramework.Particle)
+    local c = require(game:GetService("ReplicatedStorage").CombatFramework.RigLib)
+    if not shared.orl then
+        shared.orl = c.wrapAttackAnimationAsync
+    end
+    if not shared.cpc then
+        shared.cpc = b.play
+    end
+    if abc then
+        pcall(function()
+            c.wrapAttackAnimationAsync = function(d, e, f, g, h)
+            local i = c.getBladeHits(e, f, g)
+            if i then
+                b.play = function()
+                end
+                d:Play(0.25, 0.25, 0.25)
+                h(i)
+                b.play = shared.cpc
+                wait(.5)
+                d:Stop()
+            end
+            end
+        end)
+    end
+end)
+end)
+Options.ToggleFast:SetValue(true)
 
     local ToggleBringMob = Tabs.Setting:AddToggle("ToggleBringMob", {Title = "Enabled Bring Mob",Description = "fix gom quái", Default = true })
    ToggleBringMob:OnChanged(function(Value)
@@ -7881,13 +8128,13 @@ function NoFog()
 end
 
 Tabs.profile:AddParagraph({
-        Title = "Owner",
-        Content = "by Kai Wibu"
+        Title = "ผู้สร้าง",
+        Content = "SHIN X HUB"
     })
   
 Tabs.profile:AddParagraph({
-        Title = "link Discord ZINER HUB",
-        Content = "https://discord.gg/Y8vrbPyPyR"
+        Title = "ยูทูป",
+        Content = "SHIN X HUB"
     })      
 --------------------------------------------------------------------------------------------------------------------------------------------
 --Hop
@@ -7962,9 +8209,15 @@ spawn(function()
 end)
 end
 ----------------------------------------------------------------------------------------------------------------------------------------------
-Fluent:Notify({
-    Title = "ZINER HUB",
-    Content = "Helllo you",
-    Durtion = 3
-})
-warn("Cảm ơn bạn đã sử dụng hack")
+repeat wait(1) until game:IsLoaded()
+local AlchemyNotify = function(Text_i,Duration_i)
+    game.StarterGui:SetCore("SendNotification", {
+        Title = "SHIN X HUB",
+        Text = Text_i,
+        Duration = Duration_i,
+        Icon = "rbxassetid://94356636757562"
+    })
+end
+--Key
+wait(0.1)
+AlchemyNotify("โหลดฟังชั่นสคริปต์อยู่ลอก่อนแปปนึง)
