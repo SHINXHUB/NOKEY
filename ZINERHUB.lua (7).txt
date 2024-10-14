@@ -5109,7 +5109,6 @@ task.spawn(function()
         end)
     end
 end)
-end)
 Options.ToggleFast:SetValue(true)
 
     local ToggleBringMob = Tabs.Setting:AddToggle("ToggleBringMob", {Title = "Enabled Bring Mob",Description = "fix gom quái", Default = true })
