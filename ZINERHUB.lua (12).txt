@@ -2475,16 +2475,11 @@ function to(p)
 	end
 
 --Click Camera
-function ClickCamera()
-    game:GetService("VirtualUser"):CaptureController()
-    game:GetService("VirtualUser"):ClickButton1(Vector2.new(851,158),game:GetService("Workspace").Camera.CFrame)
+function Click()
+    game:GetService'VirtualUser':CaptureController()
+    game:GetService'VirtualUser':Button1Down(Vector2.new(1280, 672))
     end
 
-    function Click()
-        game:GetService'VirtualUser':CaptureController()
-        game:GetService'VirtualUser':Button1Down(Vector2.new(1280, 672))
-    end
-    
 --Attack Mastery
     function NormalAttack()
         if not _G.NormalAttack then
