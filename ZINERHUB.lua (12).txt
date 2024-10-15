@@ -2724,28 +2724,6 @@ end
 --------------------------------------------------------------------------------------------------------------------------------------------
 --Create Tabs
 local Farming = Tabs.Main:AddSection("Farming")
-local listfastattack = {'Normal','Slow','SHIN X HUB','Very Fast'}
-
-    local DropdownDelayAttack = Tabs.Main:AddDropdown("DropdownDelayAttack", {
-        Title = "Select Fast Attack",
-        Description = "",
-        Values = listfastattack,
-        Multi = false,
-        Default = 1,
-    })
-    DropdownDelayAttack:SetValue("")
-    DropdownDelayAttack:OnChanged(function(Value)
-    _G.FastAttackZINER_Mode = Value
-	if _G.FastAttackWinterhub_Mode == "Slow" then
-		_G.Fast_Delay = 0.30
-	elseif _G.FastAttackWinterhub_Mode == "Normal" then
-		_G.Fast_Delay = 0.30
-	elseif _G.FastAttackWinterhub_Mode == "SHIN X HUB" then
-		_G.Fast_Delay = 0.19
-	elseif _G.FastAttackWinterhub_Mode == "Very Fast" then
-		_G.Fast_Delay = 0
-	 end
- end)
  
     local DropdownSelectWeapon = Tabs.Main:AddDropdown("DropdownSelectWeapon", {
         Title = "Weapon",
