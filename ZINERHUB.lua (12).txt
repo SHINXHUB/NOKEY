@@ -2480,6 +2480,11 @@ function ClickCamera()
     game:GetService("VirtualUser"):ClickButton1(Vector2.new(851,158),game:GetService("Workspace").Camera.CFrame)
     end
 
+    function Click()
+        game:GetService'VirtualUser':CaptureController()
+        game:GetService'VirtualUser':Button1Down(Vector2.new(1280, 672))
+    end
+    
 --Attack Mastery
     function NormalAttack()
         if not _G.NormalAttack then
@@ -4897,6 +4902,23 @@ spawn(function()
             game.Players.LocalPlayer.Character.Busy.Value = false        
         end
     end)
+end)
+
+local ToggleFast = Tabs.Setting:AddToggle("ToggleFast", {Title = "ความเร็วตามปิง",Description = "", Default = true })
+ToggleFast:OnChanged(function(Value)
+    _G.FastAttackWinterhub_Mode = Value
+end)
+Options.ToggleFast:SetValue(true)
+spawn(function()
+	while wait(.5) do
+		pcall(function()
+			if _G.FastAttackWinterhub_Mode then
+				repeat wait(_G.Fast_Delay)
+					AttackNoCD()
+				until not _G.FastAttackWinterhub_Mode
+			end
+		end)
+	end
 end)
 
  local ToggleFast = Tabs.Setting:AddToggle("ToggleFast", {Title = "_G.SpinPos",Description = "", Default = true })
