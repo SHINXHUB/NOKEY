@@ -2629,7 +2629,7 @@ local listfastattack = {'Normal','Slow','SHIN X HUB','Very Fast'}
         Multi = false,
         Default = 1,
     })
-    DropdownDelayAttack:SetValue("Fast Attack")
+    DropdownDelayAttack:SetValue("Slow")
     DropdownDelayAttack:OnChanged(function(Value)
     _G.FastAttackZINER_Mode = Value
 	if _G.FastAttackWinterhub_Mode == "Slow" then
